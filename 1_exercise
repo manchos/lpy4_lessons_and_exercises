@@ -11,16 +11,12 @@ if __name__ == '__main__':
 Посчитать и вывести средний балл по всей школе.
 Посчитать и вывести средний балл по каждому классу.
     """)
+
     scores_list = [x for x in class_scores for x in x['scores']]
+
     print('Cредний балл по всей школе: %s' % (sum(scores_list) / len(scores_list)))
     print('\nСредний балл по каждому классу:')
     print('класс : средний балл')
-
-    # print(sum([sum(x['scores']) for x in class_scores]) / sum([len(x['scores']) for x in class_scores]))
-
-    print(sum([x for x in class_scores for x in x['scores']]) / len([x for x in class_scores for x in x['scores']]))
-
-    print('\nclass : average score')
 
     for cl in class_scores:
         print("%s : %s" % (cl['school_class'], (sum(cl['scores']) / len(cl['scores']))))
