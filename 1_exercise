@@ -1,19 +1,25 @@
 """
-
     Создать список с оценками учеников разных классов школы вида [{'school_class': '4a', 'scores': [3,4,4,5,2]}, ...]
     Посчитать и вывести средний балл по всей школе.
     Посчитать и вывести средний балл по каждому классу.
 """
 
-
 if __name__ == '__main__':
 
     class_scores = [{'school_class': '4a', 'scores': [3,4,4,5,2]}, {'school_class': '4b', 'scores': [4,3,3,5,2]},
                     {'school_class': '4b', 'scores': [4,4,3,3,3]}]
+
     scores_list = [x for x in class_scores for x in x['scores']]
     print('\nCредний балл по всей школе: %s' % (sum(scores_list) / len(scores_list)))
     print('\nСредний балл по каждому классу:')
     print('класс : средний балл')
+
+    # print(sum([sum(x['scores']) for x in class_scores]) / sum([len(x['scores']) for x in class_scores]))
+
+    print(sum([x for x in class_scores for x in x['scores']]) / len([x for x in class_scores for x in x['scores']]))
+
+    print('\nclass : average score')
+
     for cl in class_scores:
         print("%s : %s" % (cl['school_class'], (sum(cl['scores']) / len(cl['scores']))))
 
