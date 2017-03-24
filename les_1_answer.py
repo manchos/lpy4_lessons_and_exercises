@@ -9,7 +9,7 @@ def ask_user(answers):
     # TODO Переписать функцию ask_user(), добавив обработку exception-ов. Добавить перехват ctrl+C и прощание
     while True:
         try:
-            user_input = input("Как дела? :")
+            user_input = input("Как дела?")
             answer = get_answer(user_input, answers)
             print(answer)
 
@@ -25,8 +25,8 @@ def ask_user(answers):
             break
 
 
-
 if __name__ == '__main__':
+
     answers = {
         "привет": "Привет!",
         "как дела": "Отлично, а у тебя?",
