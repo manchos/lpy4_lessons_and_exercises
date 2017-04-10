@@ -20,12 +20,16 @@ else:
 
 
 dt_now = datetime.now()
+# delta = timedelta(days=1)
+# dt_now = dt_now - delta
+
 print(dt_now.strftime('%B'))
 print(dt_now.strftime('%Y'))
 DIR_analiz_reag = '/Электронный архив/#РОССИЯ/6.ЦФО/#Материалы_для_ежедневного_селекторного_совещания/' + dt_now.strftime('%Y') \
        + '/' + dt_now.strftime('%m') + '. ' + dt_now.strftime('%B') + ' ' + dt_now.strftime('%Y') + '/' + \
        dt_now.strftime('%d.%m.%Y') + '/Анализ реагирования'
 DIR_mos_obl = DIR_analiz_reag + '/Московская область'
+
 dir_local = '\\\\'+LOCALHOST+'\\cmp_data\Оперативный дежурный\\!_левая машина\\1_ОПЕРАТИВНЫЙ ДЕЖУРНЫЙ\\Планируемые сжигания порубочных остатков от МО'
 
 
@@ -91,14 +95,11 @@ def main():
     # f.retrlines('LIST')
     print(f.encoding)
     print()
-    for i in f.mlsd(DIR_analiz_reag):
-        print(i[0])
-        # print(i[0].encode(f.encoding).decode('KOI8-R'))
-        # print(i.encode('ascii'))
-        # print(i[0].encode('utf-8').decode('koi8-r'))
-    # print(aaa)
+
     try:
         f.cwd(DIR_analiz_reag)
+        for i in f.mlsd(DIR_analiz_reag):
+            print(i[0])
     except ftplib.error_perm:
         print('ERROR: невозможно открыть каталог "%s"' % DIR_analiz_reag)
         f.quit()
@@ -128,7 +129,7 @@ def main():
                 # pass
         print(file_name)
     else:
-        print('Московская область не выложила данные по порубочным остаткам')
+        print('Папка "Московская область" еще не создана на FTP-сервере')
     f.quit()
 
 
