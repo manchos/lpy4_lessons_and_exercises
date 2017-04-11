@@ -22,15 +22,18 @@ def talk_to_me(bot, update):
     print(update.message.text)
     try:
         in_quotes = re.search(r'"(.*)"', update.message.text)
-        if in_quotes.group(1)[-1] == '=':
+        expr = in_quotes.group(1).strip()
+        if expr[-1] == '=': # последний знак в выражении должен быть =
             try:
-                m2 = re.search(r'"(\s*(\d+\s*[+-\\*\\/]\s*\d+\s*)=)"', update.message.text)
+                m2 = re.search(r'(\s*(\d+\s*[+-\\*\\/]\s*\d+\s*)=)', expr)
                 print(m2.group(2))
                 bot_response = eval(m2.group(2))
             except (AttributeError):
                 bot_response = "Лажа. Введи выражение правильно"
             except (ZeroDivisionError):
                 bot_response = "На ноль делить!!!???"
+        else:
+            bot_response = "Лажа. В конце выражения должен стоять знак '='"
     except (AttributeError):
         bot_response = update.message.text
     bot.sendMessage(update.message.chat_id, bot_response)
