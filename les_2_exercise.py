@@ -2,12 +2,23 @@ from datetime import datetime, date, timedelta
 import locale
 import re
 import csv
+import sys
+
 
 
 dt_now = datetime.now()
 dt2 = datetime(2015, 5, 16, 8, 3, 44)
 print(dt2)
 print(dt_now - dt2)
+
+print(sys.platform)
+
+if sys.platform == 'win32':
+    locale.setlocale(locale.LC_ALL, 'rus_rus')
+else:
+    locale.setlocale(locale.LC_ALL, 'ru_RU.UTF-8')
+
+print(dt_now.strftime('%B'))
 
 print('============================timedelta=========================================')
 
