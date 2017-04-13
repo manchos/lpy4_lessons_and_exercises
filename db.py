@@ -28,7 +28,7 @@ class User(Base):
             # self.posts = posts
 
     def __repr__(self):
-        return '<User {} {}>'.format(self.first_name, self.last_name)
+        return '<User {} {} {}>'.format(self.first_name, self.last_name, self.email)
 
 
 class Post(Base):
@@ -51,4 +51,8 @@ class Post(Base):
         return '<Post {}>'.format(self.title)
 
 if __name__ == "__main__":
+    me = User('Михаил', 'Корнеев', 'mike@python.ru')
+    print(me.email)
+    db_session.add(me)
+    db_session.commit()
     Base.metadata.create_all(bind=engine)
