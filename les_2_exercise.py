@@ -54,7 +54,9 @@ print('Сегодня : %s' % datetime.now().strftime('%d.%m.%Y'))
 print('Месяц назад : %s' % (datetime.now() - timedelta(days=30)).strftime('%d.%m.%Y'))
 
 date_string_1 = "01/01/17 12:10:03.234567"
+date_string_2 = "2017-04-12"
 print(datetime.strptime(date_string_1, '%m/%d/%y %H:%M:%S.%f'))
+print((datetime.strptime(date_string_2, '%Y-%m-%d')).strftime('%d.%m.%Y'))
 
 print('=============================Задание по работе с файлами========================================')
 """
