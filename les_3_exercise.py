@@ -31,3 +31,5 @@ with open('files/moscow_trans_stops.csv', 'r', encoding='utf-8') as f:
     names_request = requests.get('https://apidata.mos.ru/v1/datasets/2009/rows')
     if names_request.status_code == 200:
         newborn_names_list = names_request.json()
+        print(newborn_names_list)
+
