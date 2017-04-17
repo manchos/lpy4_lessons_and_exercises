@@ -1,8 +1,10 @@
-from flask import Flask
+from flask import Flask, request, render_template
+import requests
 from weather import get_weather
 from datetime import datetime
 import sys
 import locale
+import re
 from news_list import all_news
 
 city_id = 524901
@@ -27,6 +29,20 @@ def index():
     result += "<p>Дата: %s</p>" % dt_now.strftime('%d.%m.%Y')
     return result
 
+
+@app.route('/news')
+def all_the_news():
+    colors = ['blue', 'yellow', 'red', 'green', 'magenta']
+    # for item in request.args:
+    #     print(item)
+    #     print(request.args.get(item))
+    try:
+        limit = int(request.args.get('limit'))
+    except:
+        limit = 10
+    color = request.args.get('color', 'black') if request.args.get('color') in colors else 'black'
+    return '<h1 style="color: %s">News: <small>%s</small></h1>' % (color, limit)
+
 @app.route('/news/<int:news_id>')
 def news_by_id(news_id):
     news_to_show = [news for news in all_news if news['id'] == news_id]
@@ -38,6 +54,25 @@ def news_by_id(news_id):
         return result
     else:
         abort(404)
+
+@app.route('/names')
+def newborn_names_info():
+    year = 0
+    try:
+        year = request.args.get('year')
+        val_year = re.search(r'201\d+', year)
+        year = val_year.group(0)
+    except:
+        year = 0
+    names_request = requests.get('https://apidata.mos.ru/v1/datasets/2009/rows')
+    if names_request.status_code == 200:
+        newborn_names_list = names_request.json()
+    if year:
+        return render_template('index.html', newborn_names_list=
+        [newborn_name['Cells'] for newborn_name in newborn_names_list if newborn_name['Cells']['Year'] == int(year)])
+    else:
+        return render_template('index.html', newborn_names_list=
+        [newborn_name['Cells'] for newborn_name in newborn_names_list])
 
 if __name__ == '__main__':
     app.run()
