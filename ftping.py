@@ -20,8 +20,8 @@ else:
 
 
 dt_now = datetime.now()
-# delta = timedelta(days=1)
-# dt_now = dt_now - delta
+delta = timedelta(days=5)
+dt_now = dt_now - delta
 
 print(dt_now.strftime('%B'))
 print(dt_now.strftime('%Y'))
@@ -113,7 +113,7 @@ def main():
         files_list = f.nlst()
         print(files_list)
         for file_name in files_list:
-            if 'порубочн'in file_name:
+            if 'порубочн'in file_name or 'жиган' in file_name or 'ПО' in file_name:
                 print(file_name)
                 try:
                     file_path = os.path.join(dir_local_y_m_d, file_name)
@@ -127,7 +127,7 @@ def main():
 
                 break
                 # pass
-        print(file_name)
+        # print(file_name)
     else:
         print('Папка "Московская область" еще не создана на FTP-сервере')
     f.quit()
