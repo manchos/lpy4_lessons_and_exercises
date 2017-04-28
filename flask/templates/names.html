@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    {% include 'header.html' %}
+</head>
+<body>
+    {% include 'navigation.html' %}
+    <h3>Статистическая Информация об именах новорожденных в Москве</h3>
+    <div class="container">
+        <table>
+            <tr>
+                <th>Год</th>
+                <th>Месяц</th>
+                <th>Имя</th>
+                <th>Количество</th>
+            </tr>
+            {% for newborn_info in newborn_names_list %}
+            <tr>
+                <td>{{newborn_info['Year']}}</td>
+                <td>{{newborn_info['Month']}}</td>
+                <td>{{newborn_info['Name']}}</td>
+                <td>{{newborn_info['NumberOfPersons']}}</td>
+            </tr>
+        {% endfor %}
+        </table>
+    </div>
+</body>
+</html>

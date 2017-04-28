@@ -20,8 +20,8 @@ app = Flask(__name__)
 
 
 
-@app.route('/')
-def index():
+@app.route('/weather/')
+def weather():
     url = "http://api.openweathermap.org/data/2.5/weather?id=%s&units=metric&APPID=%s" % (city_id, apikey)
     weather = get_weather(url)
     result = '<p>Температура: %s</p>' % weather['main']['temp']
@@ -29,9 +29,12 @@ def index():
     result += "<p>Дата: %s</p>" % dt_now.strftime('%d.%m.%Y')
     return result
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 
-@app.route('/news')
-def all_the_news():
+@app.route('/news/limit')
+def news_limit():
     colors = ['blue', 'yellow', 'red', 'green', 'magenta']
     # for item in request.args:
     #     print(item)
@@ -42,6 +45,25 @@ def all_the_news():
         limit = 10
     color = request.args.get('color', 'black') if request.args.get('color') in colors else 'black'
     return '<h1 style="color: %s">News: <small>%s</small></h1>' % (color, limit)
+
+@app.route('/login/', methods=['POST'])
+def login():
+    return render_template('login.html', email=request.form.get('email'), password=request.form.get('passwd'))
+
+
+@app.route('/news/all')
+def all_the_news():
+    colors = ['blue', 'yellow', 'red', 'green', 'magenta']
+    # for item in request.args:
+    #     print(item)
+    #     print(request.args.get(item))
+    try:
+        limit = int(request.args.get('limit'))
+    except:
+        limit = 10
+    color = request.args.get('color', 'black') if request.args.get('color') in colors else 'black'
+    return render_template('all_the_news.html')
+
 
 @app.route('/news/<int:news_id>')
 def news_by_id(news_id):
@@ -55,7 +77,7 @@ def news_by_id(news_id):
     else:
         abort(404)
 
-@app.route('/names')
+@app.route('/names/')
 def newborn_names_info():
     year = 0
     try:
@@ -68,10 +90,10 @@ def newborn_names_info():
     if names_request.status_code == 200:
         newborn_names_list = names_request.json()
     if year:
-        return render_template('index.html', newborn_names_list=
+        return render_template('names.html', newborn_names_list=
         [newborn_name['Cells'] for newborn_name in newborn_names_list if newborn_name['Cells']['Year'] == int(year)])
     else:
-        return render_template('index.html', newborn_names_list=
+        return render_template('names.html', newborn_names_list=
         [newborn_name['Cells'] for newborn_name in newborn_names_list])
 
 if __name__ == '__main__':
