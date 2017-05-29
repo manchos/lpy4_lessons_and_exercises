@@ -1,5 +1,6 @@
 from tkinter import *
 from tkinter.messagebox import *
+
 from threading import Timer
 def timerDone(text):
     text.delete('1.0', END)  # Удалить все

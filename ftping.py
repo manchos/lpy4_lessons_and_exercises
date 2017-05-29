@@ -20,8 +20,8 @@ else:
 
 
 dt_now = datetime.now()
-delta = timedelta(days=5)
-dt_now = dt_now - delta
+# delta = timedelta(days=1)
+# dt_now = dt_now - delta
 
 print(dt_now.strftime('%B'))
 print(dt_now.strftime('%Y'))
