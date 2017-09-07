@@ -55,6 +55,7 @@ def check_l_dirs_exist(l_dir):
     l_dir_y_m_d = os.path.join(l_dir_y_m, dt_now.strftime('%d.%m.%Y'))
     if os.path.exists(l_dir_y_m_d):
         print('локальная %s папка существует ' % dt_now.strftime('%d.%m.%Y'))
+
     else:
         os.mkdir(l_dir_y_m_d)
         print('создана папка %s' % dt_now.strftime('%d.%m.%Y'))
@@ -101,31 +102,38 @@ def check_ftp_connect(HOST, user, passwd):
 # print(decodePath(DIRN))
 
 
-def copy_file(f, l_dir_y_m_d):
+def copy_felling_residues_file(f, l_dir_y_m_d):
     f.cwd(r_dir_mos_obl)
     files_list = f.nlst()
     print(files_list)
     for file_name in files_list:
         if 'порубочн' in file_name or 'жиган' in file_name or 'ПО' in file_name:
             print(file_name)
-            try:
-                file_path = os.path.join(l_dir_y_m_d, file_name)
-                f.retrbinary('RETR %s' % file_name, open(file_path, 'wb').write)
-            except ftplib.error_perm:
-                print('нет доступа к файлу "%s"' % file_name)
-                if os.path.exists(file_name):
-                    os.unlink(file_name)
-            else:
-                print('*** Скачан "%s" to CWD' % file_name)
-
+            file_path = os.path.join(l_dir_y_m_d, file_name)
+            copy_file(f, file_path, file_name)
             break
             # pass               # print(file_name)
 
+def copy_file(f, file_path, file_name):
+    try:
+        f.retrbinary('RETR %s' % file_name, open(file_path, 'wb').write)
+    except ftplib.error_perm:
+        print('нет доступа к файлу "%s"' % file_name)
+        if os.path.exists(file_name):
+            os.unlink(file_name)
+    else:
+        print('*** Скачан "%s" to CWD' % file_name)
 
 def main():
     l_dir_y_m_d = check_l_dirs_exist(l_dir)
-    f = check_ftp_connect(HOST, user, passwd)
-    copy_file(f, l_dir_y_m_d) if f else print('На удаленном сервере нет требуемых файлов')
+    if not os.listdir(l_dir_y_m_d):
+        f = check_ftp_connect(HOST, user, passwd)
+        copy_felling_residues_file(f, l_dir_y_m_d) if f else print('На удаленном сервере нет требуемых файлов')
+    else:
+        print('папке %s уже не пустая' % l_dir_y_m_d)
+
+    # f = check_ftp_connect(HOST, user, passwd)
+    # copy_felling_residues_file(f, l_dir_y_m_d) if f else print('На удаленном сервере нет требуемых файлов')
 
 
 
